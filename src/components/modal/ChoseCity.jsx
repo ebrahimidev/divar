@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SVGSearch from "../ui/SVG/SVGSearch";
 import SVGLeftArrow from "../ui/SVG/SVGLeftArrow";
 import axios from "axios";
 import NavProvince from "../layout/NavProvince";
 import NavCity from "../layout/NavCity";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
-function ChoseCity({ setOpenCity }) {
+function ChoseCity({ openCity, setOpenCiteis, setOpenCity }) {
   const [cities, setCities] = useState([]);
   const [city, setCity] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openAllCity, setOpenAllCity] = useState(false);
-  const [selectCity, setSelectCity] = useState('');
+  const [selectCity, setSelectCity] = useState("");
+  const modalRef = useRef(null);
 
+  useOutsideClick(modalRef, openCity, setOpenCiteis);
 
   useEffect(() => {
     async function fetchCities() {
@@ -32,7 +35,7 @@ function ChoseCity({ setOpenCity }) {
 
     fetchCities();
   }, []);
-// console.log(selectCity);
+  // console.log(selectCity);
   useEffect(() => {
     async function fetchCity() {
       try {
@@ -49,13 +52,18 @@ function ChoseCity({ setOpenCity }) {
       }
     }
 
-    if(selectCity) {fetchCity();};
+    if (selectCity) {
+      fetchCity();
+    }
   }, [selectCity]);
 
   if (loading) return <div>در حال دریافت اطلاعات...</div>;
   if (error) return <div>{error}</div>;
   return (
-    <div className="h-screen left-0 fixed top-0 transition-all ease-in w-screen z-[1060] bg-[#00000066] ">
+    <div
+      ref={modalRef}
+      className="h-screen left-0 fixed top-0 transition-all ease-in w-screen z-[1060] bg-[#00000066] "
+    >
       <div className="flex items-center flex-col h-full w-full justify-center fixed left-0 top-0 ">
         <section className="w-[30.5rem] h-[41rem] max-h-[656px] min-h-[232px] bg-white rounded-[4px] relative flex column flex-col shadow ">
           <header className="px-8 pt-8 pb-4 flex flex-col ">
@@ -109,6 +117,7 @@ function ChoseCity({ setOpenCity }) {
                   انصراف
                 </span>
               </button>
+              
               <button className="flex-1 mr-4  border border-[#a62626] bg-[#a62626] text-white flex items-center rounded-[4px] cursor-pointer h-10 min-w-24 px-4 relative transition-all  justify-center">
                 <span className="overflow-hidden text-ellipsis whitespace-nowrap font-semibold">
                   تایید

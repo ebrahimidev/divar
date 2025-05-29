@@ -1,11 +1,17 @@
-import React from 'react'
-import SVGRightArrow from '../ui/SVG/SVGRightArrow';
-import SVGLeftArrow from '../ui/SVG/SVGLeftArrow';
-import SubMenuHeader from '../ui/SubMenuHeader';
+import React, { useRef } from "react";
+import SVGRightArrow from "../ui/SVG/SVGRightArrow";
+import SVGLeftArrow from "../ui/SVG/SVGLeftArrow";
+import SubMenuHeader from "../ui/SubMenuHeader";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
-function ModalCategory() {
+function ModalCategory({ setOpenCategory, openCategory }) {
+  const modalRef = useRef(null);
+  useOutsideClick(modalRef, openCategory , setOpenCategory);
   return (
-    <div className="absolute right-0 flex flex-row w-full min-h-[496px] max-h-[520px] mt-1 p-8 bg-white rounded-xs cursor-pointer transition-all  top-[44px] -left-[1.13687epx]">
+    <div
+      ref={modalRef}
+      className="absolute right-0 flex flex-row w-full min-h-[496px] max-h-[520px] mt-1 p-8 bg-white rounded-xs cursor-pointer transition-all  top-[44px] -left-[1.13687epx]"
+    >
       <div className="flex bg-white flex-col shrink-0 pl-4 border-l border-solid border-[rgba(0,0,0,0.09)] w-[176px] ">
         <a
           href=""
@@ -90,4 +96,4 @@ function ModalCategory() {
   );
 }
 
-export default ModalCategory
+export default ModalCategory;

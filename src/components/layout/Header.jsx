@@ -10,8 +10,9 @@ import ChoseCity from "../modal/ChoseCity";
 import ModalCategory from "../modal/ModalCategory";
 import ModalMyDivar from "../modal/ModalMyDivar";
 import ModalSupport from "../modal/ModalSupport";
+import { Link } from "react-router";
 
-function Header() {
+function Header({ isOpenLogin, setIsOpenLogin, isLoggedIn }) {
   const [openCity, setOpenCity] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
   const [openMyDivar, setOpenMyDivar] = useState(false);
@@ -41,7 +42,12 @@ function Header() {
                 <span>دسته ها</span>
                 <SVGDownArrow width="19px" height="19px" stroke="#0000008f" />
               </BtnNav>
-              {openCategory && <ModalCategory />}
+              {openCategory && (
+                <ModalCategory
+                  setOpenCategory={setOpenCategory}
+                  openCategory={openCategory}
+                />
+              )}
             </div>
             <div className="mr-2 flex h-[40px] ml-[8px] max-w-[480px] w-[480px] ">
               <div className="w-full">
@@ -73,7 +79,15 @@ function Header() {
                   />
                   <span>دیوار من</span>
                 </BtnNav>
-                {openMyDivar && <ModalMyDivar />}
+                {openMyDivar && (
+                  <ModalMyDivar
+                    openMyDivar={openMyDivar}
+                    setOpenMyDivar={setOpenMyDivar}
+                    isOpenLogin={isOpenLogin}
+                    setIsOpenLogin={setIsOpenLogin}
+                    isLoggedIn={isLoggedIn}
+                  />
+                )}
               </div>
 
               <BtnNav>
@@ -86,18 +100,31 @@ function Header() {
                   <SVGSupport width="19px" height="19px" stroke="#0000008f" />
                   <span>پشتیبانی</span>
                 </BtnNav>
-                {openSupport && <ModalSupport />}
+                {openSupport && (
+                  <ModalSupport
+                    openSupport={openSupport}
+                    setOpenSupport={setOpenSupport}
+                  />
+                )}
               </div>
 
-              <BtnNav className="bg-[#a62626] text-white">
-                <span>ثبت آگهی</span>
-              </BtnNav>
+              <Link to={'/ads'}>
+                <BtnNav className="bg-[#a62626] text-white">
+                  <span>ثبت آگهی</span>
+                </BtnNav>
+              </Link>
             </div>
           </div>
         </nav>
       </header>
 
-      {openCity && <ChoseCity setOpenCity={() => setOpenCity(!openCity)} />}
+      {openCity && (
+        <ChoseCity
+          openCity={openCity}
+          setOpenCiteis={setOpenCity}
+          setOpenCity={() => setOpenCity(!openCity)}
+        />
+      )}
     </>
   );
 }
